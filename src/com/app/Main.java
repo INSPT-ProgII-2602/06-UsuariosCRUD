@@ -25,5 +25,4 @@ public class Main {
         // 5. Arrancar la aplicación
         view.start();
     }
-    
 }
