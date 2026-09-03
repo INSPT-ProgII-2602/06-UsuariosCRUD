@@ -1,68 +1,61 @@
-// Paquete: com.app.view
 package com.app.view;
 
-import com.app.controller.UserController;
+import com.app.model.User;
 import com.app.util.Constants;
+import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Vista de consola. Responsable de la interacción con el usuario:
+ * muestra el menú, lee entradas y presenta mensajes.
+ */
 public class UserConsoleView {
+    private final Scanner scanner = new Scanner(System.in);
 
-    private final UserController controller;
-
-    // Inyectamos el controlador en la vista
-    public UserConsoleView(UserController controller) {
-        this.controller = controller;
+    public void displayMenu() {
+        System.out.println(Constants.MSG_MENU_HEADER);
+        System.out.println("1. Crear Usuario");
+        System.out.println("2. Listar Usuarios");
+        System.out.println("3. Actualizar Usuario");
+        System.out.println("4. Eliminar Usuario");
+        System.out.println("5. Salir");
     }
 
-    public void start() {
-        Scanner scanner = new Scanner(System.in);
-        boolean running = true;
+    public String readOption() {
+        System.out.print("Seleccione una opción: ");
+        return scanner.nextLine();
+    }
 
-        while (running) {
-            System.out.println(Constants.MSG_MENU_HEADER);
-            System.out.println("1. Crear Usuario");
-            System.out.println("2. Listar Usuarios");
-            System.out.println("3. Actualizar Usuario");
-            System.out.println("4. Eliminar Usuario");
-            System.out.println("5. Salir");
-            System.out.print("Seleccione una opción: ");
-            
-            String option = scanner.nextLine();
-            
-            switch (option) {
-                case "1":
-                    System.out.print("Ingrese nombre: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Ingrese email: ");
-                    String email = scanner.nextLine();
-                    System.out.println(controller.handleCreate(name, email));
-                    break;
-                case "2":
-                    System.out.println("\n--- Lista de Usuarios ---");
-                    System.out.println(controller.handleFindAll());
-                    break;
-                case "3":
-                    System.out.print("Ingrese ID del usuario a actualizar: ");
-                    Long idToUpdate = Long.parseLong(scanner.nextLine());
-                    System.out.print("Ingrese nuevo nombre: ");
-                    String newName = scanner.nextLine();
-                    System.out.print("Ingrese nuevo email: ");
-                    String newEmail = scanner.nextLine();
-                    System.out.println(controller.handleUpdate(idToUpdate, newName, newEmail));
-                    break;
-                case "4":
-                    System.out.print("Ingrese ID del usuario a eliminar: ");
-                    Long idToDelete = Long.parseLong(scanner.nextLine());
-                    System.out.println(controller.handleDelete(idToDelete));
-                    break;
-                case "5":
-                    running = false;
-                    System.out.println("Cerrando aplicación...");
-                    break;
-                default:
-                    System.out.println("Opción no válida.");
+    public String readName() {
+        System.out.print("Ingrese nombre: ");
+        return scanner.nextLine();
+    }
+
+    public String readEmail() {
+        System.out.print("Ingrese email: ");
+        return scanner.nextLine();
+    }
+
+    public Long readId(String prompt) {
+        System.out.print(prompt);
+        return Long.parseLong(scanner.nextLine());
+    }
+
+    public void displayMessage(String message) {
+        System.out.println(message);
+    }
+
+    public void displayUsers(List<User> users) {
+        if (users.isEmpty()) {
+            displayMessage("No hay usuarios registrados.");
+        } else {
+            for (User u : users) {
+                displayMessage(u.toString());
             }
         }
-        // No cerramos el Scanner para proteger System.in
+    }
+
+    public void displayGoodbye() {
+        System.out.println("Cerrando aplicación...");
     }
 }

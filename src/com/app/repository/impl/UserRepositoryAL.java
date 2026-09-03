@@ -7,7 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserRepositoryImpl implements UserRepository {
+/**
+ * Implementación del repositorio en memoria usando ArrayList.
+ * Simula una base de datos en la capa de persistencia.
+ */
+public class UserRepositoryAL implements UserRepository {
     
     private final List<User> database = new ArrayList<>();
     private Long autoIncrementId = 1L;
@@ -21,15 +25,18 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    // Se retorna Optional<User> para indicar de forma segura si el usuario existe o no,
+    // en lugar de retornar el usuario directamente o null.
     public Optional<User> findById(Long id) {
         Optional<User> result = Optional.empty();
-        for (User u : database) {
-            if (u.getId().equals(id)) {
-                result = Optional.of(u);
-                break;
+        int i = 0;
+        while (i < database.size() && result.isEmpty()) {
+            if (database.get(i).getId().equals(id)) {
+                result = Optional.of(database.get(i));
             }
+            i++;
         }
-        return result; // Single return
+        return result; // Single return (búsqueda lineal con while)
     }
 
     @Override
@@ -54,13 +61,14 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User update(User user) {
         User updatedUser = null;
-        for (int i = 0; i < database.size(); i++) {
+        int i = 0;
+        while (i < database.size() && updatedUser == null) {
             if (database.get(i).getId().equals(user.getId())) {
                 database.set(i, user);
                 updatedUser = user;
-                break;
             }
+            i++;
         }
-        return updatedUser; // Single return
+        return updatedUser; // Single return (búsqueda lineal con while)
     }
 }
