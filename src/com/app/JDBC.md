@@ -436,7 +436,18 @@ public class DataAccessException extends RuntimeException {
             case 0 -> e.getMessage();  // Error genérico
             default -> "Error de base de datos: " + e.getMessage();
         };
-        return new DataAccessException(message, e);
+        return new DataAccesse = 0;
+        }
+    }
+    
+    public DataAccessException(String message, String sqlState, int vendorCode) {
+        super(message);
+        this.sqlState = sqlState;
+        this.vendorCode = vendorCode;
+    }
+    
+    public String getSqlState() { return sqlState; }
+    public int getVendorCode() {Exception(message, e);
     }
 }
 ```

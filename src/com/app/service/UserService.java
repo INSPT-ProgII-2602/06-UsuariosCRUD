@@ -29,7 +29,7 @@ public class UserService {
     }
 
     public User getUser(Long id) {
-        User result = null;
+        User result;
         // Se usa Optional para evitar retornar null y hacer explícito que el usuario puede no existir.
         // Esto obliga al llamador a manejar la ausencia de valor de forma controlada.
         Optional<User> userOpt = userRepository.findById(id);
